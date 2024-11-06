@@ -82,6 +82,19 @@ if __name__ == "__main__":
             detection_result = detect_pose_landmarks_from_array(img_rgb, detector)
             annotated_image = draw_landmarks_on_image(img_rgb, detection_result)
 
+            # Check if landmarks are detected
+            if detection_result.pose_landmarks:
+                # Get index value for the nose
+                nose_index = mp.solutions.pose.PoseLandmark.NOSE.value
+
+                # Access the nose landmark
+                nose = detection_result.pose_landmarks[0][nose_index]
+
+                # Print the z-value for the nose
+                print(f"Nose Z: {nose.z:.2f}")
+            else:
+                print("Nose landmark not detected.")
+
             annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
 
             cv2.imshow("Pose Detection", annotated_image_bgr)
